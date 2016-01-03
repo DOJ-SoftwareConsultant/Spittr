@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
-
-
 <tiles-definitions>
 	<definition name="mainTemplate" template="/WEB-INF/templates/mainTemplate.jsp">
 		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
@@ -34,6 +32,7 @@
 	</definition>
 	<definition name="changePicture" extends="mainTemplate">
 		<put-attribute name="title" value="My Profile | Spittr.com | DOJ Software"></put-attribute>
+		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
 		<put-attribute name="leftNav-top" value="/WEB-INF/templates/home-leftNav-top.jsp" />
 		<put-attribute name="myprofile-leftNav-top" value="/WEB-INF/templates/viewProfile-leftNav-top.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/changeProfilePic.jsp"></put-attribute>

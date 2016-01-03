@@ -21,6 +21,7 @@ a{
 .img_a{   
     float: right;    
     text-decoration: none;   
+##    background-color: #fff;
     padding: 1.2em 0.6em;
     border-right: 1px solid #fff;   
 

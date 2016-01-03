@@ -9,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,21 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.doj.spittr.entities.DAppImage;
+import com.doj.spittr.entities.DAppMaster;
+import com.doj.spittr.entities.Dflwr;
+import com.doj.spittr.entities.Dlgn;
+import com.doj.spittr.entities.Dtweet;
+import com.doj.spittr.entities.Dusr;
+import com.doj.spittr.entities.DusrRole;
+import com.doj.spittr.entities.PasswordManagement;
 
 /**
  * @author Dinesh.Rajput
@@ -30,7 +41,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:persistence.properties")
+@PropertySource("classpath:persistence.properties" )
 @EnableJpaRepositories(basePackages = "com.doj.spittr.repositories")
 public class SpittrPersistenceConfig {
 	
@@ -52,6 +63,21 @@ public class SpittrPersistenceConfig {
 		dataSource.setPassword(env.getProperty("jdbc.password"));
 		return dataSource;
 	}
+	 @Autowired
+	    @Bean(name = "sessionFactory")
+	    public SessionFactory getSessionFactory(DataSource dataSource) {
+	    	LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
+	    	sessionBuilder.addAnnotatedClass(Dlgn.class);
+	    	sessionBuilder.addAnnotatedClass(Dusr.class);
+	    	sessionBuilder.addAnnotatedClass(DAppMaster.class);
+	    	sessionBuilder.addAnnotatedClass(Dflwr .class);
+	    	sessionBuilder.addAnnotatedClass(DAppImage.class);
+	    	sessionBuilder.addAnnotatedClass(Dtweet.class);
+	    	sessionBuilder.addAnnotatedClass(DusrRole.class);
+	    	sessionBuilder.addAnnotatedClass(PasswordManagement.class);
+	    	
+	    	return sessionBuilder.buildSessionFactory();
+	    }
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -62,6 +88,7 @@ public class SpittrPersistenceConfig {
 		final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		em.setJpaVendorAdapter(vendorAdapter);
 		em.setJpaProperties(additionalProperties());
+		
 		return em;
 	}
 
